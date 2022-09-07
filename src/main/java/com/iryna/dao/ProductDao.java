@@ -1,4 +1,4 @@
-package com.iryna.db;
+package com.iryna.dao;
 
 import com.iryna.entity.Product;
 

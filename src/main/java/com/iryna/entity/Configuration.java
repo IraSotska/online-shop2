@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @EqualsAndHashCode
 @ToString
-public class Properties {
+public class Configuration {
     private String url;
     private String user;
     private String password;

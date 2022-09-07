@@ -1,20 +1,18 @@
-package com.iryna.servlet;
+package com.iryna.web.template.servlet;
 
 import com.iryna.service.ProductService;
+import com.iryna.service.ServiceLocator;
+
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-
 import java.io.IOException;
 
-@RequiredArgsConstructor
 public class RemoveProductServlet extends HttpServlet {
 
-    private final ProductService productService;
+    private ProductService productService = ServiceLocator.getService(ProductService.class);
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         productService.deleteById(Long.parseLong(request.getParameter("id")));
 
         response.sendRedirect("/products");

@@ -1,4 +1,4 @@
-package com.iryna.template;
+package com.iryna.web.template;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;

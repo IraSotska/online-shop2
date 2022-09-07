@@ -1,4 +1,4 @@
-package com.iryna.template;
+package com.iryna.web.template;
 
 import com.iryna.entity.Product;
 import org.junit.jupiter.api.Test;
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PageGeneratorTest {
 

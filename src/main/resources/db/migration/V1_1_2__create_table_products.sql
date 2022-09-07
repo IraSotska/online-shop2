@@ -1,8 +1,8 @@
-
 CREATE TABLE products
 (
     id            SERIAL,
     name          VARCHAR(255),
     price         int,
-    creation_date timestamp
+    creation_date timestamp,
+    description   VARCHAR(512)
 );

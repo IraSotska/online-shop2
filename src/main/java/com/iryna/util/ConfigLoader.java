@@ -1,19 +1,20 @@
-package com.iryna.config;
+package com.iryna.util;
 
+import com.iryna.entity.Configuration;
 import lombok.Getter;
 
 import java.io.IOException;
 import java.util.Properties;
 
 @Getter
-public class PropertyLoader {
+public class ConfigLoader {
 
-    public static com.iryna.entity.Properties load(String path) {
+    public static Configuration load(String path) {
         var property = new Properties();
-        try (var inputStream = PropertyLoader.class.getClassLoader().getResourceAsStream(path)) {
+        try (var inputStream = ConfigLoader.class.getClassLoader().getResourceAsStream(path)) {
             property.load(inputStream);
 
-            return com.iryna.entity.Properties.builder()
+            return Configuration.builder()
                     .password(property.getProperty("db.password"))
                     .url(property.getProperty("db.url"))
                     .user(property.getProperty("db.user"))

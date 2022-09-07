@@ -14,4 +14,5 @@ public class Product {
     private String name;
     private Double price;
     private Timestamp creationDate;
+    private String description;
 }

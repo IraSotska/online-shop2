@@ -1,21 +1,20 @@
-package com.iryna.servlet;
+package com.iryna.web.template.servlet;
 
 import com.iryna.service.ProductService;
-import com.iryna.template.PageGenerator;
+import com.iryna.service.ServiceLocator;
+import com.iryna.web.template.PageGenerator;
+
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@RequiredArgsConstructor
 public class ProductsServlet extends HttpServlet {
 
-    private final PageGenerator pageGenerator;
-    private final ProductService productService;
+    private PageGenerator pageGenerator = ServiceLocator.getService(PageGenerator.class);
+    private ProductService productService = ServiceLocator.getService(ProductService.class);
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -23,7 +22,7 @@ public class ProductsServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
 
         Map<String, Object> templateData = new HashMap<>();
-        templateData.put("products", productService.getAll());
+        templateData.put("products", productService.getAll(request.getParameter("searchedWord")));
 
         response.getWriter().println(pageGenerator.generatePage("product_list.html", templateData));
     }
