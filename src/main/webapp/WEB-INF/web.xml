@@ -7,7 +7,7 @@
 
     <servlet>
         <servlet-name>AddProductServlet</servlet-name>
-        <servlet-class>com.iryna.web.template.servlet.AddProductServlet</servlet-class>
+        <servlet-class>com.iryna.web.servlet.AddProductServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AddProductServlet</servlet-name>
@@ -16,7 +16,7 @@
 
     <servlet>
         <servlet-name>EditProductServlet</servlet-name>
-        <servlet-class>com.iryna.web.template.servlet.EditProductServlet</servlet-class>
+        <servlet-class>com.iryna.web.servlet.EditProductServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>EditProductServlet</servlet-name>
@@ -25,7 +25,7 @@
 
     <servlet>
         <servlet-name>ProductsServlet</servlet-name>
-        <servlet-class>com.iryna.web.template.servlet.ProductsServlet</servlet-class>
+        <servlet-class>com.iryna.web.servlet.ProductsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ProductsServlet</servlet-name>
@@ -34,7 +34,7 @@
 
     <servlet>
         <servlet-name>RemoveProductServlet</servlet-name>
-        <servlet-class>com.iryna.web.template.servlet.RemoveProductServlet</servlet-class>
+        <servlet-class>com.iryna.web.servlet.RemoveProductServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RemoveProductServlet</servlet-name>
@@ -42,7 +42,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>com.iryna.web.template.servlet.LoginServlet</servlet-class>
+        <servlet-class>com.iryna.web.servlet.LoginServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -51,13 +51,10 @@
 
     <filter>
         <filter-name>UserFilter</filter-name>
-        <filter-class>com.iryna.web.filter.UserFilter</filter-class>
+        <filter-class>com.iryna.web.filter.SecurityFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>UserFilter</filter-name>
-        <url-pattern>/products/remove</url-pattern>
-        <url-pattern>/products/edit</url-pattern>
-        <url-pattern>/products/add</url-pattern>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
-    
 </web-app>

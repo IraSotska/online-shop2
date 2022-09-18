@@ -3,19 +3,20 @@ package com.iryna.service;
 import com.iryna.dao.ProductDao;
 import com.iryna.entity.Product;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 public class ProductService {
 
     private final ProductDao productDao;
 
     public List<Product> getAll(String searchedWord) {
-        return productDao.findAll().stream()
-                .filter(product -> product.getName().contains(searchedWord) || product.getDescription().contains(searchedWord))
-                .collect(Collectors.toList());
+        log.info("Get all SEARCH {} ", searchedWord);
+
+        return productDao.findAll(searchedWord);
     }
 
     public void deleteById(Long id) {

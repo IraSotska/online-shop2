@@ -10,28 +10,48 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Objects.isNull;
+
 @RequiredArgsConstructor
 public class JdbcProductDao implements ProductDao {
 
     private static final ProductRowMapper productRowMapper = new ProductRowMapper();
     private static final String FIND_ALL_QUERY = "SELECT * FROM products;";
-    private static final String CREATE_PRODUCT_QUERY = "INSERT INTO products(name, price, creation_date) VALUES (?, ?, ?);";
-    private static final String UPDATE_PRODUCT_QUERY = "UPDATE products SET name = ?, price = ?, creation_date = ? WHERE id = ?";
+    private static final String FIND_ALL_WITH_SEARCH_QUERY = "SELECT * FROM products WHERE name LIKE ? OR description LIKE ?;";
+    private static final String CREATE_PRODUCT_QUERY = "INSERT INTO products(name, price, creation_date, description) VALUES (?, ?, ?, ?);";
+    private static final String UPDATE_PRODUCT_QUERY = "UPDATE products SET name = ?, price = ?, description = ? WHERE id = ?";
     private static final String DELETE_PRODUCT_QUERY = "DELETE FROM products WHERE id = ?";
-    private static final String FIND_BY_ID_QUERY = "SELECT name, price, creation_date FROM products WHERE id = ?;";
+    private static final String FIND_BY_ID_QUERY = "SELECT name, price, creation_date, description FROM products WHERE id = ?;";
 
     private final PGSimpleDataSource pgSimpleDataSource;
 
-    public List<Product> findAll() {
-        try (var resultSet = pgSimpleDataSource.getConnection().createStatement().executeQuery(FIND_ALL_QUERY)) {
-            List<Product> res = new ArrayList<>();
-            while (resultSet.next()) {
-                res.add(productRowMapper.mapRow(resultSet));
+    public List<Product> findAll(String searchedWord) {
+
+        List<Product> result = new ArrayList<>();
+        if (isNull(searchedWord)) {
+            try (var resultSet = pgSimpleDataSource.getConnection().createStatement().executeQuery(FIND_ALL_QUERY)) {
+                while (resultSet.next()) {
+                    result.add(productRowMapper.mapRow(resultSet));
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException("Exception while find all query.", e);
             }
-            return res;
-        } catch (SQLException e) {
-            throw new RuntimeException("Exception while find all query.", e);
+        } else {
+            try (var connection = pgSimpleDataSource.getConnection();
+                 var preparedStatement = connection.prepareStatement(FIND_ALL_WITH_SEARCH_QUERY)) {
+                var searchTerm = "%" + searchedWord + "%";
+                preparedStatement.setString(1, searchTerm);
+                preparedStatement.setString(2, searchTerm);
+                try (var resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        result.add(productRowMapper.mapRow(resultSet));
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException("Exception while find all query with searched word: {}." + searchedWord, e);
+            }
         }
+        return result;
     }
 
     public void create(Product product) {
@@ -40,6 +60,7 @@ public class JdbcProductDao implements ProductDao {
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
             preparedStatement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+            preparedStatement.setString(4, product.getDescription());
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException("Exception while create query.", e);
@@ -51,7 +72,7 @@ public class JdbcProductDao implements ProductDao {
              var preparedStatement = connection.prepareStatement(UPDATE_PRODUCT_QUERY)) {
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
-            preparedStatement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+            preparedStatement.setString(3, product.getDescription());
             preparedStatement.setDouble(4, product.getId());
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -81,6 +102,7 @@ public class JdbcProductDao implements ProductDao {
                             .name(resultSet.getString("name"))
                             .price(resultSet.getDouble("price"))
                             .creationDate(resultSet.getTimestamp("creation_date"))
+                            .description(resultSet.getString("description"))
                             .build();
                 }
                 return product;

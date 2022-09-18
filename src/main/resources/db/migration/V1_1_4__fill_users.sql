@@ -1,0 +1,3 @@
+INSERT INTO users(login, role, encrypted_password, salt)
+VALUES ('ira', 'user', '108-69-103108-111-109-36-112-54724810575888672117-85-105-125-16-28-875298-801089-3019-44-59',
+        '5ec4c118-e4d2-4042-8a6d-5f807f5630a6');

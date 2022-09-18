@@ -1,4 +1,4 @@
-package com.iryna.web.template.servlet;
+package com.iryna.web.servlet;
 
 import com.iryna.entity.Product;
 import com.iryna.service.ProductService;
@@ -7,31 +7,37 @@ import com.iryna.web.template.PageGenerator;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Map;
 
-public class EditProductServlet extends HttpServlet {
+@Slf4j
+public class AddProductServlet extends HttpServlet {
 
     private PageGenerator pageGenerator = ServiceLocator.getService(PageGenerator.class);
     private ProductService productService = ServiceLocator.getService(ProductService.class);
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
-
-        response.getWriter().println(pageGenerator.generatePage("edit_product.html",
-                Map.of("product", productService.findById(Long.parseLong(request.getParameter("id"))))));
+        response.getWriter().println(pageGenerator.generatePage("add_product.html", Map.of()));
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
         var product = Product.builder()
-                .name(request.getParameter("name"))
-                .id(Long.parseLong(request.getParameter("id")))
-                .price(Double.parseDouble(request.getParameter("price")))
+                .creationDate(new Timestamp(System.currentTimeMillis()))
+                .name(request.getParameter("productName"))
+                .price(Double.parseDouble(request.getParameter("productPrice")))
+                .description(request.getParameter("description"))
                 .build();
 
-        productService.update(product);
+        log.info("Requested to create product: {}", product);
+
+        productService.create(product);
         response.sendRedirect("/products");
     }
 }

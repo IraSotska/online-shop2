@@ -1,6 +1,7 @@
 package com.iryna.service;
 
 import com.iryna.dao.jdbc.JdbcProductDao;
+import com.iryna.dao.jdbc.JdbcUserDao;
 import com.iryna.security.SecurityService;
 import com.iryna.util.ConfigLoader;
 import com.iryna.web.template.PageGenerator;
@@ -22,10 +23,11 @@ public class ServiceLocator {
         pgSimpleDataSource.setUser(properties.getUser());
 
         var jdbcProductDao = new JdbcProductDao(pgSimpleDataSource);
-
         var pageGenerator = new PageGenerator();
         var productService = new ProductService(jdbcProductDao);
-        var securityService = new SecurityService();
+        var userService = new UserService(new JdbcUserDao(pgSimpleDataSource));
+
+        var securityService = new SecurityService(userService);
 
         addService(ProductService.class, productService);
         addService(PGSimpleDataSource.class, pgSimpleDataSource);
