@@ -18,6 +18,7 @@ public class ConfigLoader {
                     .password(property.getProperty("db.password"))
                     .url(property.getProperty("db.url"))
                     .user(property.getProperty("db.user"))
+                    .sessionTimeToLive(Integer.parseInt(property.getProperty("session.time-to-live")))
                     .build();
 
         } catch (IOException e) {

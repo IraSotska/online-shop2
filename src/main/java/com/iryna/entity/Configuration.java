@@ -11,4 +11,5 @@ public class Configuration {
     private String url;
     private String user;
     private String password;
+    private Integer sessionTimeToLive;
 }

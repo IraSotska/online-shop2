@@ -20,10 +20,15 @@ public class EditProductServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=utf-8");
-        response.setStatus(HttpServletResponse.SC_OK);
 
-        response.getWriter().println(pageGenerator.generatePage("edit_product.html",
-                Map.of("product", productService.findById(Long.parseLong(request.getParameter("id"))))));
+        var product = productService.findById(Long.parseLong(request.getParameter("id")));
+
+        if (product.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.getWriter().println(pageGenerator.generatePage("edit_product.html", Map.of("product", product.get())));
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

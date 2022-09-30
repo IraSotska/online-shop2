@@ -27,11 +27,12 @@ public class ServiceLocator {
         var productService = new ProductService(jdbcProductDao);
         var userService = new UserService(new JdbcUserDao(pgSimpleDataSource));
 
-        var securityService = new SecurityService(userService);
+        var securityService = new SecurityService(userService, properties.getSessionTimeToLive());
 
         addService(ProductService.class, productService);
         addService(PGSimpleDataSource.class, pgSimpleDataSource);
         addService(JdbcProductDao.class, jdbcProductDao);
+        addService(UserService.class, userService);
         addService(PageGenerator.class, pageGenerator);
         addService(SecurityService.class, securityService);
     }

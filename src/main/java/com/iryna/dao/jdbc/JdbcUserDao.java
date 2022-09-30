@@ -1,12 +1,14 @@
 package com.iryna.dao.jdbc;
 
 import com.iryna.dao.UserDao;
+import com.iryna.entity.Product;
 import com.iryna.entity.User;
 import com.iryna.entity.Role;
 import lombok.RequiredArgsConstructor;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class JdbcUserDao implements UserDao {
@@ -34,5 +36,15 @@ public class JdbcUserDao implements UserDao {
         } catch (SQLException e) {
             throw new RuntimeException("Exception while find by login query.", e);
         }
+    }
+
+    @Override
+    public void addToCart(Product product, Long userId) {
+
+    }
+
+    @Override
+    public List<Product> getCart(Long userId) {
+        return null;
     }
 }

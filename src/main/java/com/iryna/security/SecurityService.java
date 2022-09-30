@@ -1,33 +1,75 @@
 package com.iryna.security;
 
+import com.iryna.entity.Role;
+import com.iryna.entity.Session;
 import com.iryna.service.UserService;
 import com.iryna.util.PasswordEncryptor;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.util.*;
+
+import static com.iryna.entity.Role.*;
 
 @RequiredArgsConstructor
 public class SecurityService {
 
     private final UserService userService;
-    private List<String> tokens = new ArrayList<>();
+    private final Integer sessionTimeToLive;
+    private final Map<String, Session> sessionList = Collections.synchronizedMap(new HashMap<>());
 
     public String login(String login, String password) {
         var userFromDb = userService.findByLogin(login);
-        var encryptedPassword = PasswordEncryptor.encrypt(userFromDb.getSalt() + password);
 
-        if (Objects.equals(encryptedPassword, userFromDb.getEncryptedPassword())) {
-            var uuid = UUID.randomUUID().toString();
-            tokens.add(uuid);
-            return uuid;
+        if (userFromDb != null) {
+            var encryptedPassword = PasswordEncryptor.encrypt(userFromDb.getSalt() + password);
+
+            if (Objects.equals(encryptedPassword, userFromDb.getEncryptedPassword())) {
+                var uuid = UUID.randomUUID().toString();
+                sessionList.put(uuid, Session.builder()
+                        .expireDate(LocalDateTime.now().plusSeconds(sessionTimeToLive))
+                        .user(userFromDb)
+                        .token(uuid)
+                        .build());
+                return uuid;
+            }
         }
         return null;
     }
 
-    public boolean isTokenExist(String token) {
-        return tokens.contains(token);
+    public void logout(String token) {
+        var session = sessionList.entrySet().stream()
+                .filter(e -> Objects.equals(token, e.getValue().getToken())).findFirst();
+        session.ifPresent(stringSessionEntry -> sessionList.remove(stringSessionEntry.getKey()));
+    }
+
+    public Session getSession(String token) {
+        if (sessionList.containsKey(token)) {
+            var session = sessionList.get(token);
+            if (LocalDateTime.now().isBefore(session.getExpireDate())) {
+                session.setCart(userService.getCart(session.getUser().getLogin()));
+                return session;
+            }
+            sessionList.remove(token);
+        }
+        return null;
+    }
+
+    public boolean isAccessAllowedForRole(String token, Role role) {
+        if (sessionList.containsKey(token)) {
+            var session = sessionList.get(token);
+            if (LocalDateTime.now().isBefore(session.getExpireDate())) {
+                var currentRole = session.getUser().getRole();
+
+                if ((role.equals(currentRole)) || (Objects.equals(ADMIN, currentRole))) {
+                    return true;
+                }
+                if ((Objects.equals(USER, currentRole)) && ((role.equals(USER)) || (role.equals(GUEST)))) {
+                    return true;
+                }
+            }
+            sessionList.remove(token);
+        }
+        return false;
     }
 }

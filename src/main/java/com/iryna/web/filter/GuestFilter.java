@@ -3,40 +3,38 @@ package com.iryna.web.filter;
 import com.iryna.security.SecurityService;
 import com.iryna.service.ServiceLocator;
 
+import com.iryna.web.util.CookieExtractor;
 import jakarta.servlet.*;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.Objects;
 
-public class SecurityFilter implements Filter {
+import static com.iryna.entity.Role.GUEST;
+
+public class GuestFilter implements Filter {
 
     private SecurityService securityService = ServiceLocator.getService(SecurityService.class);
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         var httpServletRequest = (HttpServletRequest) servletRequest;
+        var httpServletResponse = (HttpServletResponse) servletResponse;
 
         if (httpServletRequest.getRequestURI().equals("/login")) {
-            filterChain.doFilter(servletRequest, servletResponse);
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
 
-        var cookies = httpServletRequest.getCookies();
+        var token = CookieExtractor.extractCookie(httpServletRequest.getCookies(), "user-token");
 
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (Objects.equals(cookie.getName(), "user-token")) {
-                    if (securityService.isTokenExist(cookie.getValue())) {
-                        filterChain.doFilter(servletRequest, servletResponse);
-                        return;
-                    }
-                }
+        if (token.isPresent()) {
+            if (securityService.isAccessAllowedForRole(token.get(), GUEST)) {
+                filterChain.doFilter(httpServletRequest, httpServletResponse);
             }
+
         } else {
-            ((HttpServletResponse) servletResponse).sendRedirect("/login");
+            httpServletResponse.sendRedirect("/login");
         }
     }
 }

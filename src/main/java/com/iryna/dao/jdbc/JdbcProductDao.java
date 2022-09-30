@@ -9,12 +9,12 @@ import org.postgresql.ds.PGSimpleDataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Objects.isNull;
 
 @RequiredArgsConstructor
 public class JdbcProductDao implements ProductDao {
-
     private static final ProductRowMapper productRowMapper = new ProductRowMapper();
     private static final String FIND_ALL_QUERY = "SELECT * FROM products;";
     private static final String FIND_ALL_WITH_SEARCH_QUERY = "SELECT * FROM products WHERE name LIKE ? OR description LIKE ?;";
@@ -90,7 +90,7 @@ public class JdbcProductDao implements ProductDao {
         }
     }
 
-    public Product findById(Long id) {
+    public Optional<Product> findById(Long id) {
         try (var connection = pgSimpleDataSource.getConnection();
              var preparedStatement = connection.prepareStatement(FIND_BY_ID_QUERY)) {
             preparedStatement.setLong(1, id);
@@ -105,7 +105,7 @@ public class JdbcProductDao implements ProductDao {
                             .description(resultSet.getString("description"))
                             .build();
                 }
-                return product;
+                return Optional.of(product);
             }
         } catch (SQLException e) {
             throw new RuntimeException("Exception while find by id query.", e);

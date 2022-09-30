@@ -2,6 +2,7 @@ package com.iryna.entity;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Setter
@@ -9,10 +10,9 @@ import java.util.List;
 @Builder
 @ToString
 @EqualsAndHashCode
-public class User {
-    private String login;
-    private Role role;
-    private String salt;
-    private String encryptedPassword;
+public class Session {
+    private String token;
+    private User user;
+    private LocalDateTime expireDate;
     private List<Product> cart;
 }

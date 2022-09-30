@@ -16,6 +16,8 @@ public class RemoveProductServlet extends HttpServlet {
     private ProductService productService = ServiceLocator.getService(ProductService.class);
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setStatus(HttpServletResponse.SC_OK);
+
         var id = Long.parseLong(request.getParameter("id"));
         productService.deleteById(id);
 

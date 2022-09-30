@@ -37,6 +37,7 @@ public class LoginServlet extends HttpServlet {
         log.info("Login user: {}", login);
 
         var cookie = new Cookie("user-token", token);
+        cookie.setMaxAge(4*60*60);
         response.addCookie(cookie);
         response.sendRedirect("/products");
     }
