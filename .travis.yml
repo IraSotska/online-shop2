@@ -8,4 +8,4 @@ deploy:
     secure: 92aa8602-71cf-4f47-93bb-76154f99f3a3
   app: online-shop-ira
   on:
-    repo: irasotska/online-shop2
+    repo: IraSotska/online-shop2
