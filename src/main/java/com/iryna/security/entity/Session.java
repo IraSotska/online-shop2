@@ -1,5 +1,7 @@
-package com.iryna.entity;
+package com.iryna.security.entity;
 
+import com.iryna.entity.Product;
+import com.iryna.entity.User;
 import lombok.*;
 
 import java.time.LocalDateTime;

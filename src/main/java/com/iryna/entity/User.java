@@ -1,5 +1,6 @@
 package com.iryna.entity;
 
+import com.iryna.security.entity.Role;
 import lombok.*;
 
 import java.util.List;

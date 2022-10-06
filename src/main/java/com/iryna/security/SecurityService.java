@@ -1,7 +1,7 @@
 package com.iryna.security;
 
-import com.iryna.entity.Role;
-import com.iryna.entity.Session;
+import com.iryna.security.entity.Role;
+import com.iryna.security.entity.Session;
 import com.iryna.service.UserService;
 import com.iryna.util.PasswordEncryptor;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static com.iryna.entity.Role.*;
+import static com.iryna.security.entity.Role.*;
 
 @RequiredArgsConstructor
 public class SecurityService {

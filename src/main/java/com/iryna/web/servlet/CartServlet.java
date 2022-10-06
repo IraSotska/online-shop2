@@ -1,7 +1,7 @@
 package com.iryna.web.servlet;
 
 import com.iryna.entity.Product;
-import com.iryna.entity.Session;
+import com.iryna.security.entity.Session;
 import com.iryna.service.ServiceLocator;
 import com.iryna.service.UserService;
 import com.iryna.web.template.PageGenerator;

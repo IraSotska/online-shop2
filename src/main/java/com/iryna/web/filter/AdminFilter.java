@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-import static com.iryna.entity.Role.ADMIN;
+import static com.iryna.security.entity.Role.ADMIN;
 
 public class AdminFilter implements Filter {
 

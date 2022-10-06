@@ -1,7 +1,7 @@
 package com.iryna.security;
 
 import com.iryna.entity.Product;
-import com.iryna.entity.Role;
+import com.iryna.security.entity.Role;
 import com.iryna.entity.User;
 import com.iryna.service.UserService;
 import org.junit.jupiter.api.DisplayName;
@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.Timestamp;
 import java.util.List;
 
-import static com.iryna.entity.Role.*;
+import static com.iryna.security.entity.Role.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

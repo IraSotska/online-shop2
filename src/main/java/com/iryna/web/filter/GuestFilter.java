@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-import static com.iryna.entity.Role.GUEST;
+import static com.iryna.security.entity.Role.GUEST;
 
 public class GuestFilter implements Filter {
 

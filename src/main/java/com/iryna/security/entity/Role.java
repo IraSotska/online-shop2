@@ -1,4 +1,4 @@
-package com.iryna.entity;
+package com.iryna.security.entity;
 
 public enum Role {
     GUEST,

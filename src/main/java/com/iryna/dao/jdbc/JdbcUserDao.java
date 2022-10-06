@@ -3,7 +3,7 @@ package com.iryna.dao.jdbc;
 import com.iryna.dao.UserDao;
 import com.iryna.entity.Product;
 import com.iryna.entity.User;
-import com.iryna.entity.Role;
+import com.iryna.security.entity.Role;
 import lombok.RequiredArgsConstructor;
 import org.postgresql.ds.PGSimpleDataSource;
 
