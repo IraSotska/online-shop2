@@ -4,12 +4,12 @@ import com.iryna.security.SecurityService;
 import com.iryna.service.ServiceLocator;
 import com.iryna.web.template.PageGenerator;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
@@ -37,7 +37,7 @@ public class LoginServlet extends HttpServlet {
         log.info("Login user: {}", login);
 
         var cookie = new Cookie("user-token", token);
-        cookie.setMaxAge(4*60*60);
+        cookie.setMaxAge(4 * 60 * 60);
         response.addCookie(cookie);
         response.sendRedirect("/products");
     }

@@ -100,6 +100,6 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>AdminFilter</filter-name>
-        <url-pattern>products/edit/*</url-pattern>
+        <url-pattern>/products/edit/*</url-pattern>
     </filter-mapping>
 </web-app>

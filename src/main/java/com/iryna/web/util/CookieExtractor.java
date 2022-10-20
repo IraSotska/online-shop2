@@ -1,7 +1,6 @@
 package com.iryna.web.util;
 
-import jakarta.servlet.http.Cookie;
-
+import javax.servlet.http.Cookie;
 import java.util.Objects;
 import java.util.Optional;
 

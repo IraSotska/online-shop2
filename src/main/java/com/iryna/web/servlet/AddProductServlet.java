@@ -4,11 +4,11 @@ import com.iryna.entity.Product;
 import com.iryna.service.ProductService;
 import com.iryna.service.ServiceLocator;
 import com.iryna.web.template.PageGenerator;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Map;
