@@ -37,14 +37,4 @@ public class JdbcUserDao implements UserDao {
             throw new RuntimeException("Exception while find by login query.", e);
         }
     }
-
-    @Override
-    public void addToCart(Product product, Long userId) {
-
-    }
-
-    @Override
-    public List<Product> getCart(Long userId) {
-        return null;
-    }
 }

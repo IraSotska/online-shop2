@@ -23,7 +23,6 @@ public class JdbcProductDao implements ProductDao {
     private final DataSource pgSimpleDataSource;
 
     public List<Product> findAll(String searchedWord) {
-
         List<Product> result = new ArrayList<>();
         try (var connection = pgSimpleDataSource.getConnection();
              var preparedStatement = connection.prepareStatement(FIND_ALL_WITH_SEARCH_QUERY)) {
@@ -92,7 +91,7 @@ public class JdbcProductDao implements ProductDao {
                             .description(resultSet.getString("description"))
                             .build();
                 }
-                return Optional.of(product);
+                return Optional.ofNullable(product);
             }
         } catch (SQLException e) {
             throw new RuntimeException("Exception while find by id query.", e);

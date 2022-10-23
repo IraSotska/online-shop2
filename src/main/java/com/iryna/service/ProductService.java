@@ -17,7 +17,7 @@ public class ProductService {
     public List<Product> getAll(String searchedWord) {
         log.info("Get all SEARCH {} ", searchedWord);
 
-        return productDao.findAll(searchedWord);
+        return productDao.findAll(searchedWord == null ? "" : searchedWord);
     }
 
     public void deleteById(Long id) {
