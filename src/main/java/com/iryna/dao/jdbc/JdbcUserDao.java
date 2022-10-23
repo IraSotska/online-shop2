@@ -1,14 +1,12 @@
 package com.iryna.dao.jdbc;
 
 import com.iryna.dao.UserDao;
-import com.iryna.entity.Product;
 import com.iryna.entity.User;
 import com.iryna.security.entity.Role;
 import lombok.RequiredArgsConstructor;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.util.List;
 
 @RequiredArgsConstructor
 public class JdbcUserDao implements UserDao {

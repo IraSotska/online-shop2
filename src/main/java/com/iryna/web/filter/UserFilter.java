@@ -28,9 +28,9 @@ public class UserFilter implements Filter {
                 var session = securityService.getSession(token.get());
                 httpServletRequest.setAttribute("session", session);
                 filterChain.doFilter(httpServletRequest, httpServletResponse);
+                return;
             }
-        } else {
-            httpServletResponse.sendRedirect("/login");
         }
+        httpServletResponse.sendRedirect("/login");
     }
 }
