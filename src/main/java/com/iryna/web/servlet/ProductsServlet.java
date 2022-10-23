@@ -19,7 +19,6 @@ public class ProductsServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=utf-8");
-        response.setStatus(HttpServletResponse.SC_OK);
         var searchedWord = request.getParameter("searchedWord");
 
         log.info("Request to get all with searched word: {}", searchedWord);

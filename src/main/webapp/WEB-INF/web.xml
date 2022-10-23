@@ -93,9 +93,6 @@
     <filter-mapping>
         <filter-name>AdminFilter</filter-name>
         <url-pattern>/products/remove/*</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>AdminFilter</filter-name>
         <url-pattern>/products/add/*</url-pattern>
         <url-pattern>/products/edit/*</url-pattern>
     </filter-mapping>

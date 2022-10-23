@@ -16,7 +16,7 @@ public class SecurityService {
 
     private final UserService userService;
     private final Integer sessionTimeToLive;
-    private final Map<String, Session> sessionList = Collections.synchronizedMap(new HashMap<>());
+    private final List<Session> sessionList = new ArrayList<>();
 
     public String login(String login, String password) {
         var userFromDb = userService.findByLogin(login);
@@ -26,7 +26,7 @@ public class SecurityService {
 
             if (Objects.equals(encryptedPassword, userFromDb.getEncryptedPassword())) {
                 var uuid = UUID.randomUUID().toString();
-                sessionList.put(uuid, Session.builder()
+                sessionList.add(Session.builder()
                         .expireDate(LocalDateTime.now().plusSeconds(sessionTimeToLive))
                         .user(userFromDb)
                         .token(uuid)
@@ -38,26 +38,29 @@ public class SecurityService {
     }
 
     public void logout(String token) {
-        var session = sessionList.entrySet().stream()
-                .filter(e -> Objects.equals(token, e.getValue().getToken())).findFirst();
-        session.ifPresent(stringSessionEntry -> sessionList.remove(stringSessionEntry.getKey()));
+        sessionList.removeIf(e -> Objects.equals(token, e.getToken()));
     }
 
     public Session getSession(String token) {
-        if (sessionList.containsKey(token)) {
-            var session = sessionList.get(token);
+        var optionalSession = sessionList.stream()
+                .filter(session -> Objects.equals(session.getToken(), token)).findFirst();
+        if (optionalSession.isPresent()) {
+            var session = optionalSession.get();
             if (LocalDateTime.now().isBefore(session.getExpireDate())) {
                 session.setCart(userService.getCart(session.getUser().getLogin()));
                 return session;
             }
-            sessionList.remove(token);
+            logout(token);
         }
         return null;
     }
 
     public boolean isAccessAllowedForRole(String token, Role role) {
-        if (sessionList.containsKey(token)) {
-            var session = sessionList.get(token);
+        var optionalSession = sessionList.stream()
+                .filter(session -> Objects.equals(session.getToken(), token)).findFirst();
+
+        if (optionalSession.isPresent()) {
+            var session = optionalSession.get();
             if (LocalDateTime.now().isBefore(session.getExpireDate())) {
                 var currentRole = session.getUser().getRole();
 
@@ -68,7 +71,7 @@ public class SecurityService {
                     return true;
                 }
             }
-            sessionList.remove(token);
+            logout(token);
         }
         return false;
     }

@@ -22,7 +22,6 @@ public class AddProductServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         response.setContentType("text/html;charset=utf-8");
-        response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().println(pageGenerator.generatePage("add_product.html", Map.of()));
     }
 

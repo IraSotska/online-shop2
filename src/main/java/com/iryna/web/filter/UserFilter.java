@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static java.util.Objects.isNull;
+import static com.iryna.security.entity.Role.USER;
 
 public class UserFilter implements Filter {
 
@@ -23,11 +23,12 @@ public class UserFilter implements Filter {
         var token = CookieExtractor.extractCookie(httpServletRequest.getCookies(), "user-token");
 
         if (token.isPresent()) {
-            var session = securityService.getSession(token.get());
-            if (!isNull(session)) {
+            if (securityService.isAccessAllowedForRole(token.get(), USER)) {
+
+                var session = securityService.getSession(token.get());
                 httpServletRequest.setAttribute("session", session);
+                filterChain.doFilter(httpServletRequest, httpServletResponse);
             }
-            filterChain.doFilter(httpServletRequest, httpServletResponse);
         } else {
             httpServletResponse.sendRedirect("/login");
         }

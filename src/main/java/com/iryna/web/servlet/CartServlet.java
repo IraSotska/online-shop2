@@ -25,7 +25,6 @@ public class CartServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=utf-8");
-        response.setStatus(HttpServletResponse.SC_OK);
 
         var session = (Session) request.getAttribute("session");
         Map<String, Object> templateData = session == null ? Map.of() : Map.of("products", session.getCart());

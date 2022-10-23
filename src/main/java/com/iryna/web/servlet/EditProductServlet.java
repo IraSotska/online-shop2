@@ -27,7 +27,6 @@ public class EditProductServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
-        response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().println(pageGenerator.generatePage("edit_product.html", Map.of("product", product.get())));
     }
 
