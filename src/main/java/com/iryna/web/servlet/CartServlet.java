@@ -19,7 +19,7 @@ import java.util.Map;
 @Slf4j
 public class CartServlet extends HttpServlet {
 
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm:ss.SSS");
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
     private PageGenerator pageGenerator = ServiceLocator.getService(PageGenerator.class);
     private UserService userService = ServiceLocator.getService(UserService.class);
 
