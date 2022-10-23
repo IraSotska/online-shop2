@@ -7,7 +7,7 @@ import com.iryna.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.iryna.security.entity.Role.*;
@@ -34,7 +34,7 @@ class SecurityServiceTest {
 
         var product = Product.builder()
                 .description("some")
-                .creationDate(new Timestamp(System.currentTimeMillis()))
+                .creationDate(LocalDateTime.now())
                 .name("name")
                 .price(1.1D)
                 .id(1L)

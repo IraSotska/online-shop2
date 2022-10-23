@@ -12,14 +12,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 @Slf4j
 public class CartServlet extends HttpServlet {
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMM dd, yyyy, hh:mm:ss aaa");
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MMM dd, yyyy, hh:mm:ss aaa");
     private PageGenerator pageGenerator = ServiceLocator.getService(PageGenerator.class);
     private UserService userService = ServiceLocator.getService(UserService.class);
 
@@ -40,8 +40,7 @@ public class CartServlet extends HttpServlet {
                 .id(Long.parseLong(request.getParameter("id")))
                 .price(Double.parseDouble(request.getParameter("price")))
                 .name(String.valueOf(request.getParameter("name")))
-                .creationDate(new Timestamp(DATE_FORMAT.parse(request.getParameter("creationDate")).getTime()))
-                .description(String.valueOf(request.getParameter("description")))
+                .creationDate(LocalDateTime.parse(request.getParameter("creationDate"), DATE_FORMAT))
                 .build();
 
         log.info("Requested to add product with id: {} to cart", product);

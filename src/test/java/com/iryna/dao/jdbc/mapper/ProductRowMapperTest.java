@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -18,7 +19,7 @@ class ProductRowMapperTest {
     private static final String NAME = "name";
     private static final String DESCRIPTION = "description";
     private static final Double PRICE = 1.11;
-    private static final Timestamp CREATION_DATE = new Timestamp(System.currentTimeMillis());
+    private static final LocalDateTime CREATION_DATE = LocalDateTime.now();
 
     @Test
     @DisplayName("Should Map Row")
@@ -37,7 +38,7 @@ class ProductRowMapperTest {
         when(resultSet.getString("name")).thenReturn(NAME);
         when(resultSet.getString("description")).thenReturn(DESCRIPTION);
         when(resultSet.getDouble("price")).thenReturn(PRICE);
-        when(resultSet.getTimestamp("creation_date")).thenReturn(CREATION_DATE);
+        when(resultSet.getTimestamp("creation_date")).thenReturn(Timestamp.valueOf(CREATION_DATE));
 
         var product = productRowMapper.mapRow(resultSet);
 

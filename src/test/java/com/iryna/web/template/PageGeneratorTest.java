@@ -3,7 +3,7 @@ package com.iryna.web.template;
 import com.iryna.entity.Product;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +34,7 @@ class PageGeneratorTest {
                 .name("name1")
                 .price(1D)
                 .id(2L)
-                .creationDate(new Timestamp(System.currentTimeMillis())).build()));
+                .creationDate(LocalDateTime.now()).build()));
         var pageGenerator = new PageGenerator();
         assertEquals(expectedHtml, pageGenerator.generatePage("test_page.html", templateData));
     }

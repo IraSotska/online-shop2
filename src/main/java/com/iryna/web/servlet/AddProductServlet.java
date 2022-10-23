@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Slf4j
@@ -29,7 +29,7 @@ public class AddProductServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         var product = Product.builder()
-                .creationDate(new Timestamp(System.currentTimeMillis()))
+                .creationDate(LocalDateTime.now())
                 .name(request.getParameter("productName"))
                 .price(Double.parseDouble(request.getParameter("productPrice")))
                 .description(request.getParameter("description"))
