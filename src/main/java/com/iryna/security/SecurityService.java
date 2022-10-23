@@ -6,12 +6,14 @@ import com.iryna.service.UserService;
 import com.iryna.util.ConfigLoader;
 import com.iryna.util.PasswordEncryptor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.iryna.security.entity.Role.*;
 
+@Slf4j
 @RequiredArgsConstructor
 public class SecurityService {
 
