@@ -4,52 +4,39 @@ import com.iryna.dao.ProductDao;
 import com.iryna.dao.jdbc.mapper.ProductRowMapper;
 import com.iryna.entity.Product;
 import lombok.RequiredArgsConstructor;
-import org.postgresql.ds.PGSimpleDataSource;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Objects.isNull;
-
 @RequiredArgsConstructor
 public class JdbcProductDao implements ProductDao {
     private static final ProductRowMapper productRowMapper = new ProductRowMapper();
-    private static final String FIND_ALL_QUERY = "SELECT * FROM products;";
-    private static final String FIND_ALL_WITH_SEARCH_QUERY = "SELECT * FROM products WHERE name LIKE ? OR description LIKE ?;";
+    private static final String FIND_ALL_WITH_SEARCH_QUERY = "SELECT id, name, price, creation_date, description FROM products WHERE name LIKE ? OR description LIKE ?;";
     private static final String CREATE_PRODUCT_QUERY = "INSERT INTO products(name, price, creation_date, description) VALUES (?, ?, ?, ?);";
     private static final String UPDATE_PRODUCT_QUERY = "UPDATE products SET name = ?, price = ?, description = ? WHERE id = ?";
     private static final String DELETE_PRODUCT_QUERY = "DELETE FROM products WHERE id = ?";
     private static final String FIND_BY_ID_QUERY = "SELECT name, price, creation_date, description FROM products WHERE id = ?;";
 
-    private final PGSimpleDataSource pgSimpleDataSource;
+    private final DataSource pgSimpleDataSource;
 
     public List<Product> findAll(String searchedWord) {
 
         List<Product> result = new ArrayList<>();
-        if (isNull(searchedWord)) {
-            try (var resultSet = pgSimpleDataSource.getConnection().createStatement().executeQuery(FIND_ALL_QUERY)) {
+        try (var connection = pgSimpleDataSource.getConnection();
+             var preparedStatement = connection.prepareStatement(FIND_ALL_WITH_SEARCH_QUERY)) {
+            var searchTerm = "%" + searchedWord + "%";
+            preparedStatement.setString(1, searchTerm);
+            preparedStatement.setString(2, searchTerm);
+            try (var resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     result.add(productRowMapper.mapRow(resultSet));
                 }
-            } catch (SQLException e) {
-                throw new RuntimeException("Exception while find all query.", e);
             }
-        } else {
-            try (var connection = pgSimpleDataSource.getConnection();
-                 var preparedStatement = connection.prepareStatement(FIND_ALL_WITH_SEARCH_QUERY)) {
-                var searchTerm = "%" + searchedWord + "%";
-                preparedStatement.setString(1, searchTerm);
-                preparedStatement.setString(2, searchTerm);
-                try (var resultSet = preparedStatement.executeQuery()) {
-                    while (resultSet.next()) {
-                        result.add(productRowMapper.mapRow(resultSet));
-                    }
-                }
-            } catch (SQLException e) {
-                throw new RuntimeException("Exception while find all query with searched word: {}." + searchedWord, e);
-            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Exception while find all query with searched word: {}." + searchedWord, e);
         }
         return result;
     }

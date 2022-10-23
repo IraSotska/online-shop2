@@ -4,6 +4,7 @@ import com.iryna.entity.Product;
 import com.iryna.security.entity.Role;
 import com.iryna.entity.User;
 import com.iryna.service.UserService;
+import com.iryna.util.ConfigLoader;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,8 @@ class SecurityServiceTest {
     private static final String ENCRYPTED_PASSWORD =
             "49-7326-8046-77-971106656023101-54-91121-20-57-118-461-105-95-63-10478-11796-42-94-938";
     private UserService userService = mock(UserService.class);
-    private SecurityService securityService = new SecurityService(userService, 5000);
+    private ConfigLoader configLoader = mock(ConfigLoader.class);
+    private SecurityService securityService = new SecurityService(userService, configLoader);
 
     @Test
     @DisplayName("Should Create Session")
@@ -42,6 +44,7 @@ class SecurityServiceTest {
 
         when(userService.findByLogin(login)).thenReturn(user);
         when(userService.getCart(login)).thenReturn(List.of(product));
+        when(configLoader.load("session.time-to-live")).thenReturn("5000");
 
         var token = securityService.login(login, "pass");
         var session = securityService.getSession(token);
@@ -118,6 +121,7 @@ class SecurityServiceTest {
                 .build();
 
         when(userService.findByLogin(login)).thenReturn(user);
+        when(configLoader.load("session.time-to-live")).thenReturn("5000");
 
         var result = securityService.isAccessAllowedForRole(securityService.login(login, "pass"), pageToAccess);
 

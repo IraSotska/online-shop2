@@ -2,6 +2,7 @@ package com.iryna.web.servlet;
 
 import com.iryna.security.SecurityService;
 import com.iryna.service.ServiceLocator;
+import com.iryna.util.ConfigLoader;
 import com.iryna.web.template.PageGenerator;
 
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ public class LoginServlet extends HttpServlet {
 
     private PageGenerator pageGenerator = ServiceLocator.getService(PageGenerator.class);
     private SecurityService securityService = ServiceLocator.getService(SecurityService.class);
+    private ConfigLoader configLoader = ServiceLocator.getService(ConfigLoader.class);
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=utf-8");
@@ -36,7 +38,7 @@ public class LoginServlet extends HttpServlet {
         log.info("Login user: {}", login);
 
         var cookie = new Cookie("user-token", token);
-        cookie.setMaxAge(4 * 60 * 60);
+        cookie.setMaxAge(Integer.parseInt(configLoader.load("session.time-to-live")));
         response.addCookie(cookie);
         response.sendRedirect("/products");
     }

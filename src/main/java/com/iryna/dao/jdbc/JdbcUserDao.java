@@ -5,8 +5,8 @@ import com.iryna.entity.Product;
 import com.iryna.entity.User;
 import com.iryna.security.entity.Role;
 import lombok.RequiredArgsConstructor;
-import org.postgresql.ds.PGSimpleDataSource;
 
+import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class JdbcUserDao implements UserDao {
 
     private static final String FIND_BY_LOGIN_QUERY = "SELECT login, role, encrypted_password, salt FROM users WHERE login = ?;";
 
-    private final PGSimpleDataSource pgSimpleDataSource;
+    private final DataSource pgSimpleDataSource;
 
     public User findByLogin(String login) {
         try (var connection = pgSimpleDataSource.getConnection();

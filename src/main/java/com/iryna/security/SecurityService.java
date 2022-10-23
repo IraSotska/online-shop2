@@ -3,6 +3,7 @@ package com.iryna.security;
 import com.iryna.security.entity.Role;
 import com.iryna.security.entity.Session;
 import com.iryna.service.UserService;
+import com.iryna.util.ConfigLoader;
 import com.iryna.util.PasswordEncryptor;
 import lombok.RequiredArgsConstructor;
 
@@ -15,7 +16,7 @@ import static com.iryna.security.entity.Role.*;
 public class SecurityService {
 
     private final UserService userService;
-    private final Integer sessionTimeToLive;
+    private final ConfigLoader configLoader;
     private final List<Session> sessionList = new ArrayList<>();
 
     public String login(String login, String password) {
@@ -27,7 +28,7 @@ public class SecurityService {
             if (Objects.equals(encryptedPassword, userFromDb.getEncryptedPassword())) {
                 var uuid = UUID.randomUUID().toString();
                 sessionList.add(Session.builder()
-                        .expireDate(LocalDateTime.now().plusSeconds(sessionTimeToLive))
+                        .expireDate(LocalDateTime.now().plusSeconds(Long.parseLong(configLoader.load("session.time-to-live"))))
                         .user(userFromDb)
                         .token(uuid)
                         .build());
