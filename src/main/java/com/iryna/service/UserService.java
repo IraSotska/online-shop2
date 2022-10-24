@@ -4,21 +4,26 @@ import com.iryna.dao.UserDao;
 import com.iryna.entity.Product;
 import com.iryna.entity.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserDao userDao;
 
-    private final Map<String, List<Product>> cartList = Collections.synchronizedMap(new HashMap<>());
+    private final Map<String, List<Product>> cartList = new ConcurrentHashMap<>();
 
     public User findByLogin(String login) {
         return userDao.findByLogin(login);
     }
 
     public void addToCart(Product product, String login) {
+
+        log.info("Add product: {} to cart by user: {}", product, login);
 
         if (cartList.containsKey(login)) {
             cartList.get(login).add(product);
