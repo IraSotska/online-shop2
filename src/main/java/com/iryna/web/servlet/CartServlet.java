@@ -38,6 +38,7 @@ public class CartServlet extends HttpServlet {
         var product = Product.builder()
                 .id(Long.parseLong(request.getParameter("id")))
                 .price(Double.parseDouble(request.getParameter("price")))
+                .description(request.getParameter("description"))
                 .name(String.valueOf(request.getParameter("name")))
                 .creationDate(LocalDateTime.parse(request.getParameter("creationDate"), DATE_FORMAT))
                 .build();
