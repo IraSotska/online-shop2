@@ -2,17 +2,19 @@ package com.iryna.service;
 
 import com.iryna.dao.ProductDao;
 import com.iryna.entity.Product;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@RequiredArgsConstructor
+@Setter
+@NoArgsConstructor
 public class ProductService {
 
-    private final ProductDao productDao;
+    private ProductDao productDao;
 
     public List<Product> getAll(String searchedWord) {
         log.info("Get all SEARCH {} ", searchedWord);

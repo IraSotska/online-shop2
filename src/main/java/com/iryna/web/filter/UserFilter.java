@@ -1,7 +1,7 @@
 package com.iryna.web.filter;
 
 import com.iryna.security.SecurityService;
-import com.iryna.service.ServiceLocator;
+import com.iryna.ioc.ApplicationContext;
 import com.iryna.web.util.CookieExtractor;
 
 import javax.servlet.*;
@@ -13,7 +13,7 @@ import static com.iryna.security.entity.Role.USER;
 
 public class UserFilter implements Filter {
 
-    private SecurityService securityService = ServiceLocator.getService(SecurityService.class);
+    private SecurityService securityService = ApplicationContext.getService(SecurityService.class);
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {

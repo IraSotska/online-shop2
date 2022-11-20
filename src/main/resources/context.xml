@@ -1,0 +1,36 @@
+<beans>
+    <bean id="productService" class="com.iryna.service.ProductService">
+        <property name="productDao" ref="jdbcProductDao"/>
+    </bean>
+
+    <bean id="dataSourceContainer" class="com.iryna.dao.jdbc.DataSourceContainer"/>
+
+    <bean id="jdbcProductDao" class="com.iryna.dao.jdbc.JdbcProductDao">
+        <property name="productRowMapper" ref="productRowMapper"/>
+        <property name="dataSourceContainer" ref="dataSourceContainer"/>
+    </bean>
+
+    <bean id="jdbcUserDao" class="com.iryna.dao.jdbc.JdbcUserDao">
+        <property name="dataSourceContainer" ref="dataSourceContainer"/>
+    </bean>
+
+    <bean id="productRowMapper" class="com.iryna.dao.jdbc.mapper.ProductRowMapper"/>
+
+    <bean id="pageGenerator" class="com.iryna.web.template.PageGenerator"/>
+
+    <bean id="configLoader" class="com.iryna.util.ConfigLoader"/>
+
+    <bean id="userService" class="com.iryna.service.UserService">
+        <property name="userDao" ref="jdbcUserDao"/>
+    </bean>
+
+    <bean id="securityService" class="com.iryna.security.SecurityService">
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="dataSourceContainer" class="com.iryna.dao.jdbc.DataSourceContainer"/>
+
+    <bean id="propertiesInserter" class="com.iryna.ioc.postProcessor.PropertiesInserter"/>
+
+    <bean id="stringWriter" class="java.io.StringWriter"/>
+</beans>

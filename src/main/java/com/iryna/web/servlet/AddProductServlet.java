@@ -2,7 +2,7 @@ package com.iryna.web.servlet;
 
 import com.iryna.entity.Product;
 import com.iryna.service.ProductService;
-import com.iryna.service.ServiceLocator;
+import com.iryna.ioc.ApplicationContext;
 import com.iryna.web.template.PageGenerator;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,8 +16,8 @@ import java.util.Map;
 @Slf4j
 public class AddProductServlet extends HttpServlet {
 
-    private PageGenerator pageGenerator = ServiceLocator.getService(PageGenerator.class);
-    private ProductService productService = ServiceLocator.getService(ProductService.class);
+    private PageGenerator pageGenerator = ApplicationContext.getService(PageGenerator.class);
+    private ProductService productService = ApplicationContext.getService(ProductService.class);
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 

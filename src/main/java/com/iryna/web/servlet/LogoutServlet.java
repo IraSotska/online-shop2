@@ -1,7 +1,7 @@
 package com.iryna.web.servlet;
 
 import com.iryna.security.SecurityService;
-import com.iryna.service.ServiceLocator;
+import com.iryna.ioc.ApplicationContext;
 import com.iryna.web.util.CookieExtractor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,7 +13,7 @@ import java.io.IOException;
 @Slf4j
 public class LogoutServlet extends HttpServlet {
 
-    private SecurityService securityService = ServiceLocator.getService(SecurityService.class);
+    private SecurityService securityService = ApplicationContext.getService(SecurityService.class);
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         var token = CookieExtractor.extractCookie(request.getCookies(), "user-token");

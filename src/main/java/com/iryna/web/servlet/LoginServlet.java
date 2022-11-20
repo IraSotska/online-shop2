@@ -1,7 +1,7 @@
 package com.iryna.web.servlet;
 
 import com.iryna.security.SecurityService;
-import com.iryna.service.ServiceLocator;
+import com.iryna.ioc.ApplicationContext;
 import com.iryna.util.ConfigLoader;
 import com.iryna.web.template.PageGenerator;
 
@@ -17,9 +17,9 @@ import java.util.Map;
 @Slf4j
 public class LoginServlet extends HttpServlet {
 
-    private PageGenerator pageGenerator = ServiceLocator.getService(PageGenerator.class);
-    private SecurityService securityService = ServiceLocator.getService(SecurityService.class);
-    private ConfigLoader configLoader = ServiceLocator.getService(ConfigLoader.class);
+    private PageGenerator pageGenerator = ApplicationContext.getService(PageGenerator.class);
+    private SecurityService securityService = ApplicationContext.getService(SecurityService.class);
+    private ConfigLoader configLoader = ApplicationContext.getService(ConfigLoader.class);
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=utf-8");

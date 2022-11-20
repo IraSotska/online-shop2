@@ -1,20 +1,16 @@
 package com.iryna.util;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.util.Properties;
 
-@Getter
-@RequiredArgsConstructor
+@Setter
 public class ConfigLoader {
-
-    private final String configPath;
 
     public String load(String propertyName) {
         var property = new Properties();
-        try (var inputStream = ConfigLoader.class.getClassLoader().getResourceAsStream(configPath)) {
+        try (var inputStream = ConfigLoader.class.getClassLoader().getResourceAsStream("application.properties")) {
             property.load(inputStream);
 
             return property.getProperty(propertyName);

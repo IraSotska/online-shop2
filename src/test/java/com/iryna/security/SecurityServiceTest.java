@@ -5,6 +5,7 @@ import com.iryna.security.entity.Role;
 import com.iryna.entity.User;
 import com.iryna.service.UserService;
 import com.iryna.util.ConfigLoader;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +22,12 @@ class SecurityServiceTest {
             "49-7326-8046-77-971106656023101-54-91121-20-57-118-461-105-95-63-10478-11796-42-94-938";
     private UserService userService = mock(UserService.class);
     private ConfigLoader configLoader = mock(ConfigLoader.class);
-    private SecurityService securityService = new SecurityService(userService, configLoader);
+    private SecurityService securityService = new SecurityService();
+
+    @BeforeAll
+    private void init() {
+        securityService.setUserService(userService);
+    }
 
     @Test
     @DisplayName("Should Create Session")

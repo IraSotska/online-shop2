@@ -1,11 +1,11 @@
 package com.iryna.security;
 
+import com.iryna.ioc.annotation.Value;
 import com.iryna.security.entity.Role;
 import com.iryna.security.entity.Session;
 import com.iryna.service.UserService;
-import com.iryna.util.ConfigLoader;
 import com.iryna.util.PasswordEncryptor;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
@@ -14,12 +14,14 @@ import java.util.*;
 import static com.iryna.security.entity.Role.*;
 
 @Slf4j
-@RequiredArgsConstructor
+@Setter
 public class SecurityService {
 
-    private final UserService userService;
-    private final ConfigLoader configLoader;
-    private final List<Session> sessionList = new ArrayList<>();
+    private List<Session> sessionList = new ArrayList<>();
+    private UserService userService;
+
+    @Value(path = "${session.time-to-live}")
+    private Long sessionTimeToLive;
 
     public String login(String login, String password) {
         var userFromDb = userService.findByLogin(login);
@@ -30,7 +32,7 @@ public class SecurityService {
             if (Objects.equals(encryptedPassword, userFromDb.getEncryptedPassword())) {
                 var uuid = UUID.randomUUID().toString();
                 sessionList.add(Session.builder()
-                        .expireDate(LocalDateTime.now().plusSeconds(Long.parseLong(configLoader.load("session.time-to-live"))))
+                        .expireDate(LocalDateTime.now().plusSeconds(sessionTimeToLive))
                         .user(userFromDb)
                         .token(uuid)
                         .build());

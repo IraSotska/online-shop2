@@ -3,19 +3,19 @@ package com.iryna.service;
 import com.iryna.dao.UserDao;
 import com.iryna.entity.Product;
 import com.iryna.entity.User;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
-@RequiredArgsConstructor
+@Setter
 public class UserService {
 
-    private final UserDao userDao;
+    private UserDao userDao;
 
-    private final Map<String, List<Product>> cartList = new ConcurrentHashMap<>();
+    private static final Map<String, List<Product>> cartList = new ConcurrentHashMap<>();
 
     public User findByLogin(String login) {
         return userDao.findByLogin(login);

@@ -3,28 +3,28 @@ package com.iryna.dao.jdbc;
 import com.iryna.dao.ProductDao;
 import com.iryna.dao.jdbc.mapper.ProductRowMapper;
 import com.iryna.entity.Product;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
+@Setter
 public class JdbcProductDao implements ProductDao {
-    private static final ProductRowMapper productRowMapper = new ProductRowMapper();
+
+    private ProductRowMapper productRowMapper;
+    private DataSourceContainer dataSourceContainer;
+
     private static final String FIND_ALL_WITH_SEARCH_QUERY = "SELECT id, name, price, creation_date, description FROM products WHERE name LIKE ? OR description LIKE ?;";
     private static final String CREATE_PRODUCT_QUERY = "INSERT INTO products(name, price, creation_date, description) VALUES (?, ?, ?, ?);";
     private static final String UPDATE_PRODUCT_QUERY = "UPDATE products SET name = ?, price = ?, description = ? WHERE id = ?";
     private static final String DELETE_PRODUCT_QUERY = "DELETE FROM products WHERE id = ?";
     private static final String FIND_BY_ID_QUERY = "SELECT name, price, creation_date, description FROM products WHERE id = ?;";
 
-    private final DataSource pgSimpleDataSource;
-
     public List<Product> findAll(String searchedWord) {
         List<Product> result = new ArrayList<>();
-        try (var connection = pgSimpleDataSource.getConnection();
+        try (var connection = dataSourceContainer.getPGSimpleDataSource().getConnection();
              var preparedStatement = connection.prepareStatement(FIND_ALL_WITH_SEARCH_QUERY)) {
             var searchTerm = "%" + searchedWord + "%";
             preparedStatement.setString(1, searchTerm);
@@ -41,7 +41,7 @@ public class JdbcProductDao implements ProductDao {
     }
 
     public void create(Product product) {
-        try (var connection = pgSimpleDataSource.getConnection();
+        try (var connection = dataSourceContainer.getPGSimpleDataSource().getConnection();
              var preparedStatement = connection.prepareStatement(CREATE_PRODUCT_QUERY)) {
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
@@ -54,7 +54,7 @@ public class JdbcProductDao implements ProductDao {
     }
 
     public void update(Product product) {
-        try (var connection = pgSimpleDataSource.getConnection();
+        try (var connection = dataSourceContainer.getPGSimpleDataSource().getConnection();
              var preparedStatement = connection.prepareStatement(UPDATE_PRODUCT_QUERY)) {
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
@@ -67,7 +67,7 @@ public class JdbcProductDao implements ProductDao {
     }
 
     public void delete(Long id) {
-        try (var connection = pgSimpleDataSource.getConnection();
+        try (var connection = dataSourceContainer.getPGSimpleDataSource().getConnection();
              var preparedStatement = connection.prepareStatement(DELETE_PRODUCT_QUERY)) {
             preparedStatement.setLong(1, id);
             preparedStatement.execute();
@@ -77,7 +77,7 @@ public class JdbcProductDao implements ProductDao {
     }
 
     public Optional<Product> findById(Long id) {
-        try (var connection = pgSimpleDataSource.getConnection();
+        try (var connection = dataSourceContainer.getPGSimpleDataSource().getConnection();
              var preparedStatement = connection.prepareStatement(FIND_BY_ID_QUERY)) {
             preparedStatement.setLong(1, id);
             try (var resultSet = preparedStatement.executeQuery()) {

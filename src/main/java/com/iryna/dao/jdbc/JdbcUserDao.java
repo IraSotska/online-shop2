@@ -3,20 +3,19 @@ package com.iryna.dao.jdbc;
 import com.iryna.dao.UserDao;
 import com.iryna.entity.User;
 import com.iryna.security.entity.Role;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
-import javax.sql.DataSource;
 import java.sql.SQLException;
 
-@RequiredArgsConstructor
+@Setter
 public class JdbcUserDao implements UserDao {
 
     private static final String FIND_BY_LOGIN_QUERY = "SELECT login, role, encrypted_password, salt FROM users WHERE login = ?;";
 
-    private final DataSource pgSimpleDataSource;
+    private DataSourceContainer dataSourceContainer;
 
     public User findByLogin(String login) {
-        try (var connection = pgSimpleDataSource.getConnection();
+        try (var connection = dataSourceContainer.getPGSimpleDataSource().getConnection();
              var preparedStatement = connection.prepareStatement(FIND_BY_LOGIN_QUERY)) {
             preparedStatement.setString(1, login);
             try (var resultSet = preparedStatement.executeQuery()) {

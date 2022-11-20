@@ -2,7 +2,7 @@ package com.iryna.web.servlet;
 
 import com.iryna.entity.Product;
 import com.iryna.security.entity.Session;
-import com.iryna.service.ServiceLocator;
+import com.iryna.ioc.ApplicationContext;
 import com.iryna.service.UserService;
 import com.iryna.web.template.PageGenerator;
 import lombok.SneakyThrows;
@@ -20,8 +20,8 @@ import java.util.Map;
 public class CartServlet extends HttpServlet {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
-    private PageGenerator pageGenerator = ServiceLocator.getService(PageGenerator.class);
-    private UserService userService = ServiceLocator.getService(UserService.class);
+    private PageGenerator pageGenerator = ApplicationContext.getService(PageGenerator.class);
+    private UserService userService = ApplicationContext.getService(UserService.class);
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=utf-8");
