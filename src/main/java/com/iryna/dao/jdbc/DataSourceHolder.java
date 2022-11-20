@@ -4,7 +4,7 @@ import com.iryna.ioc.annotation.Value;
 import com.study.ioc.processor.PostConstruct;
 import org.postgresql.ds.PGSimpleDataSource;
 
-public class DataSourceContainer {
+public class DataSourceHolder {
 
     private static final PGSimpleDataSource PG_SIMPLE_DATA_SOURCE = new PGSimpleDataSource();
 

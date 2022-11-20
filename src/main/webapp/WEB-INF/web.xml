@@ -5,6 +5,12 @@
          metadata-complete="false"
          version="3.1">
 
+    <listener>
+        <listener-class>
+            com.iryna.ioc.ApplicationContextListener
+        </listener-class>
+    </listener>
+
     <servlet>
         <servlet-name>AddProductServlet</servlet-name>
         <servlet-class>com.iryna.web.servlet.AddProductServlet</servlet-class>

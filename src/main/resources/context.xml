@@ -3,15 +3,15 @@
         <property name="productDao" ref="jdbcProductDao"/>
     </bean>
 
-    <bean id="dataSourceContainer" class="com.iryna.dao.jdbc.DataSourceContainer"/>
+    <bean id="dataSourceHolder" class="com.iryna.dao.jdbc.DataSourceHolder"/>
 
     <bean id="jdbcProductDao" class="com.iryna.dao.jdbc.JdbcProductDao">
         <property name="productRowMapper" ref="productRowMapper"/>
-        <property name="dataSourceContainer" ref="dataSourceContainer"/>
+        <property name="dataSourceHolder" ref="dataSourceHolder"/>
     </bean>
 
     <bean id="jdbcUserDao" class="com.iryna.dao.jdbc.JdbcUserDao">
-        <property name="dataSourceContainer" ref="dataSourceContainer"/>
+        <property name="dataSourceHolder" ref="dataSourceHolder"/>
     </bean>
 
     <bean id="productRowMapper" class="com.iryna.dao.jdbc.mapper.ProductRowMapper"/>
@@ -28,7 +28,7 @@
         <property name="userService" ref="userService"/>
     </bean>
 
-    <bean id="dataSourceContainer" class="com.iryna.dao.jdbc.DataSourceContainer"/>
+    <bean id="dataSourceContainer" class="com.iryna.dao.jdbc.DataSourceHolder"/>
 
     <bean id="propertiesInserter" class="com.iryna.ioc.postProcessor.PropertiesInserter"/>
 

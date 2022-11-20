@@ -1,12 +1,14 @@
 package com.iryna.web.servlet;
 
 import com.iryna.security.SecurityService;
-import com.iryna.ioc.ApplicationContext;
+import com.iryna.ioc.ApplicationContextListener;
 import com.iryna.util.ConfigLoader;
 import com.iryna.web.template.PageGenerator;
 
+import com.study.ioc.context.ApplicationContext;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +19,17 @@ import java.util.Map;
 @Slf4j
 public class LoginServlet extends HttpServlet {
 
-    private PageGenerator pageGenerator = ApplicationContext.getService(PageGenerator.class);
-    private SecurityService securityService = ApplicationContext.getService(SecurityService.class);
-    private ConfigLoader configLoader = ApplicationContext.getService(ConfigLoader.class);
+    private PageGenerator pageGenerator;
+    private SecurityService securityService;
+    private ConfigLoader configLoader;
+
+    @Override
+    public void init(ServletConfig config) {
+        var context = (ApplicationContext) config.getServletContext().getAttribute(ApplicationContextListener.APPLICATION_CONTEXT);
+        pageGenerator = context.getBean(PageGenerator.class);
+        securityService = context.getBean(SecurityService.class);
+        configLoader = context.getBean(ConfigLoader.class);
+    }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=utf-8");

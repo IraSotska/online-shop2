@@ -12,10 +12,10 @@ public class JdbcUserDao implements UserDao {
 
     private static final String FIND_BY_LOGIN_QUERY = "SELECT login, role, encrypted_password, salt FROM users WHERE login = ?;";
 
-    private DataSourceContainer dataSourceContainer;
+    private DataSourceHolder dataSourceHolder;
 
     public User findByLogin(String login) {
-        try (var connection = dataSourceContainer.getPGSimpleDataSource().getConnection();
+        try (var connection = dataSourceHolder.getPGSimpleDataSource().getConnection();
              var preparedStatement = connection.prepareStatement(FIND_BY_LOGIN_QUERY)) {
             preparedStatement.setString(1, login);
             try (var resultSet = preparedStatement.executeQuery()) {

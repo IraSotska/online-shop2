@@ -14,7 +14,7 @@ import java.util.Optional;
 public class JdbcProductDao implements ProductDao {
 
     private ProductRowMapper productRowMapper;
-    private DataSourceContainer dataSourceContainer;
+    private DataSourceHolder dataSourceHolder;
 
     private static final String FIND_ALL_WITH_SEARCH_QUERY = "SELECT id, name, price, creation_date, description FROM products WHERE name LIKE ? OR description LIKE ?;";
     private static final String CREATE_PRODUCT_QUERY = "INSERT INTO products(name, price, creation_date, description) VALUES (?, ?, ?, ?);";
@@ -24,7 +24,7 @@ public class JdbcProductDao implements ProductDao {
 
     public List<Product> findAll(String searchedWord) {
         List<Product> result = new ArrayList<>();
-        try (var connection = dataSourceContainer.getPGSimpleDataSource().getConnection();
+        try (var connection = dataSourceHolder.getPGSimpleDataSource().getConnection();
              var preparedStatement = connection.prepareStatement(FIND_ALL_WITH_SEARCH_QUERY)) {
             var searchTerm = "%" + searchedWord + "%";
             preparedStatement.setString(1, searchTerm);
@@ -41,7 +41,7 @@ public class JdbcProductDao implements ProductDao {
     }
 
     public void create(Product product) {
-        try (var connection = dataSourceContainer.getPGSimpleDataSource().getConnection();
+        try (var connection = dataSourceHolder.getPGSimpleDataSource().getConnection();
              var preparedStatement = connection.prepareStatement(CREATE_PRODUCT_QUERY)) {
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
@@ -54,7 +54,7 @@ public class JdbcProductDao implements ProductDao {
     }
 
     public void update(Product product) {
-        try (var connection = dataSourceContainer.getPGSimpleDataSource().getConnection();
+        try (var connection = dataSourceHolder.getPGSimpleDataSource().getConnection();
              var preparedStatement = connection.prepareStatement(UPDATE_PRODUCT_QUERY)) {
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
@@ -67,7 +67,7 @@ public class JdbcProductDao implements ProductDao {
     }
 
     public void delete(Long id) {
-        try (var connection = dataSourceContainer.getPGSimpleDataSource().getConnection();
+        try (var connection = dataSourceHolder.getPGSimpleDataSource().getConnection();
              var preparedStatement = connection.prepareStatement(DELETE_PRODUCT_QUERY)) {
             preparedStatement.setLong(1, id);
             preparedStatement.execute();
@@ -77,7 +77,7 @@ public class JdbcProductDao implements ProductDao {
     }
 
     public Optional<Product> findById(Long id) {
-        try (var connection = dataSourceContainer.getPGSimpleDataSource().getConnection();
+        try (var connection = dataSourceHolder.getPGSimpleDataSource().getConnection();
              var preparedStatement = connection.prepareStatement(FIND_BY_ID_QUERY)) {
             preparedStatement.setLong(1, id);
             try (var resultSet = preparedStatement.executeQuery()) {
