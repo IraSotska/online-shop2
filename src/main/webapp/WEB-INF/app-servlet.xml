@@ -13,7 +13,6 @@
 
     <context:component-scan base-package="com.iryna">
         <context:exclude-filter type="regex" expression="com\.iryna\.security.*"/>
-        <context:exclude-filter type="regex" expression="com\.iryna\.security.*"/>
     </context:component-scan>
 
     <bean id="productService" class="com.iryna.service.ProductService">

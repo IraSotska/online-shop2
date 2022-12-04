@@ -9,9 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
@@ -31,14 +31,11 @@ public class LoginController {
     }
 
     @PostMapping
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        var login = request.getParameter("login");
-        var password = request.getParameter("password");
-
+    public String doPost(@RequestParam String login, @RequestParam String password, HttpServletResponse response) {
         var token = securityService.login(login, password);
         if (token == null) {
             log.info("Not correct password for user: {}", login);
-            response.sendRedirect("/login");
+            return "redirect:login";
         }
         log.info("Login user: {}", login);
 
@@ -46,6 +43,6 @@ public class LoginController {
         var maxAge = securityService.getSessionTimeToLive();
         cookie.setMaxAge(maxAge);
         response.addCookie(cookie);
-        response.sendRedirect("/products");
+        return "redirect:products";
     }
 }

@@ -40,7 +40,7 @@ public class CartController {
 
     @SneakyThrows
     @PostMapping
-    public void doPost(HttpServletRequest request, HttpServletResponse response) {
+    public String doPost(HttpServletRequest request) {
 
         var product = Product.builder()
                 .id(Long.parseLong(request.getParameter("id")))
@@ -57,7 +57,6 @@ public class CartController {
         if (session != null) {
             userService.addToCart(product, session.getUser().getLogin());
         }
-
-        response.sendRedirect("/products");
+        return "redirect:products";
     }
 }

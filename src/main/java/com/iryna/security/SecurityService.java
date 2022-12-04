@@ -23,8 +23,6 @@ public class SecurityService {
 
     private List<Session> sessionList = new ArrayList<>();
     private UserService userService;
-
-    @Value("${session.time-to-live:3000}")
     private Integer sessionTimeToLive;
 
     public String login(String login, String password) {
