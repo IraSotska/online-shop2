@@ -1,28 +1,26 @@
 package com.iryna.web.servlet;
 
 import com.iryna.security.SecurityService;
-import com.iryna.ioc.ApplicationContextListener;
 import com.iryna.web.util.CookieExtractor;
-import com.study.ioc.context.ApplicationContext;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-public class LogoutServlet extends HttpServlet {
+@Controller
+@RequestMapping("/logout")
+@AllArgsConstructor
+public class LogoutController {
 
     private SecurityService securityService;
 
-    @Override
-    public void init(ServletConfig config) {
-        var context = (ApplicationContext) config.getServletContext().getAttribute(ApplicationContextListener.APPLICATION_CONTEXT);
-        securityService = context.getBean(SecurityService.class);
-    }
-
+    @PostMapping
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         var token = CookieExtractor.extractCookie(request.getCookies(), "user-token");
 

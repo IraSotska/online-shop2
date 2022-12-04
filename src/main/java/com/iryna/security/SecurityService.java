@@ -1,12 +1,14 @@
 package com.iryna.security;
 
-import com.iryna.ioc.annotation.Value;
 import com.iryna.security.entity.Role;
 import com.iryna.security.entity.Session;
 import com.iryna.service.UserService;
 import com.iryna.util.PasswordEncryptor;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -15,13 +17,15 @@ import static com.iryna.security.entity.Role.*;
 
 @Slf4j
 @Setter
+@Getter
+@Service
 public class SecurityService {
 
     private List<Session> sessionList = new ArrayList<>();
     private UserService userService;
 
-    @Value(path = "${session.time-to-live}")
-    private Long sessionTimeToLive;
+    @Value("${session.time-to-live:3000}")
+    private Integer sessionTimeToLive;
 
     public String login(String login, String password) {
         var userFromDb = userService.findByLogin(login);
@@ -43,7 +47,7 @@ public class SecurityService {
     }
 
     public void logout(String token) {
-        sessionList.removeIf(e -> Objects.equals(token, e.getToken()));
+        sessionList.removeIf(session -> Objects.equals(token, session.getToken()));
     }
 
     public Session getSession(String token) {

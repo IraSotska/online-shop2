@@ -1,9 +1,12 @@
 package com.iryna.web.util;
 
+import org.springframework.stereotype.Component;
+
 import javax.servlet.http.Cookie;
 import java.util.Objects;
 import java.util.Optional;
 
+@Component
 public class CookieExtractor {
 
     public static Optional<String> extractCookie(Cookie[] cookies, String name) {

@@ -5,75 +5,24 @@
          metadata-complete="false"
          version="3.1">
 
+    <servlet>
+        <servlet-name>app</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>app</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/root-context.xml</param-value>
+    </context-param>
+
     <listener>
-        <listener-class>
-            com.iryna.ioc.ApplicationContextListener
-        </listener-class>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-
-    <servlet>
-        <servlet-name>AddProductServlet</servlet-name>
-        <servlet-class>com.iryna.web.servlet.AddProductServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AddProductServlet</servlet-name>
-        <url-pattern>/products/add</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>EditProductServlet</servlet-name>
-        <servlet-class>com.iryna.web.servlet.EditProductServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>EditProductServlet</servlet-name>
-        <url-pattern>/products/edit</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>ProductsServlet</servlet-name>
-        <servlet-class>com.iryna.web.servlet.ProductsServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ProductsServlet</servlet-name>
-        <url-pattern>/products</url-pattern>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>RemoveProductServlet</servlet-name>
-        <servlet-class>com.iryna.web.servlet.RemoveProductServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>RemoveProductServlet</servlet-name>
-        <url-pattern>/products/remove</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>com.iryna.web.servlet.LoginServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/login</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>com.iryna.web.servlet.LogoutServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>LogoutServlet</servlet-name>
-        <url-pattern>/logout</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>CartServlet</servlet-name>
-        <servlet-class>com.iryna.web.servlet.CartServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>CartServlet</servlet-name>
-        <url-pattern>/cart</url-pattern>
-    </servlet-mapping>
 
     <filter>
         <filter-name>GuestFilter</filter-name>

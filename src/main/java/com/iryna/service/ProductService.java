@@ -5,12 +5,14 @@ import com.iryna.entity.Product;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @Setter
+@Service
 @NoArgsConstructor
 public class ProductService {
 

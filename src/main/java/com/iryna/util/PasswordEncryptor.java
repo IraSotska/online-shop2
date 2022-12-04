@@ -1,9 +1,12 @@
 package com.iryna.util;
 
+import org.springframework.stereotype.Component;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+@Component
 public class PasswordEncryptor {
 
     private static final String STATIC_SALT = "public boolean isTokenExist(String token) {";

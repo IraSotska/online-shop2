@@ -1,41 +1,36 @@
 package com.iryna.web.servlet;
 
 import com.iryna.security.SecurityService;
-import com.iryna.ioc.ApplicationContextListener;
-import com.iryna.util.ConfigLoader;
 import com.iryna.web.template.PageGenerator;
 
-import com.study.ioc.context.ApplicationContext;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
 @Slf4j
-public class LoginServlet extends HttpServlet {
+@Controller
+@RequestMapping("/login")
+@RequiredArgsConstructor
+public class LoginController {
 
-    private PageGenerator pageGenerator;
-    private SecurityService securityService;
-    private ConfigLoader configLoader;
+    private final PageGenerator pageGenerator;
+    private final SecurityService securityService;
 
-    @Override
-    public void init(ServletConfig config) {
-        var context = (ApplicationContext) config.getServletContext().getAttribute(ApplicationContextListener.APPLICATION_CONTEXT);
-        pageGenerator = context.getBean(PageGenerator.class);
-        securityService = context.getBean(SecurityService.class);
-        configLoader = context.getBean(ConfigLoader.class);
-    }
-
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html;charset=utf-8");
+    @GetMapping
+    public void doGet(HttpServletResponse response) throws IOException {
         response.getWriter().println(pageGenerator.generatePage("login.html", Map.of()));
     }
 
+    @PostMapping
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         var login = request.getParameter("login");
         var password = request.getParameter("password");
@@ -48,7 +43,8 @@ public class LoginServlet extends HttpServlet {
         log.info("Login user: {}", login);
 
         var cookie = new Cookie("user-token", token);
-        cookie.setMaxAge(Integer.parseInt(configLoader.load("session.time-to-live")));
+        var maxAge = securityService.getSessionTimeToLive();
+        cookie.setMaxAge(maxAge);
         response.addCookie(cookie);
         response.sendRedirect("/products");
     }

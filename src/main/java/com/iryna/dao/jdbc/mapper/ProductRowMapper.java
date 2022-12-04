@@ -1,10 +1,12 @@
 package com.iryna.dao.jdbc.mapper;
 
 import com.iryna.entity.Product;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Component
 public class ProductRowMapper {
 
     public Product mapRow(ResultSet resultSet) throws SQLException {

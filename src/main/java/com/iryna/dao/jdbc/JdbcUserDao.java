@@ -4,18 +4,20 @@ import com.iryna.dao.UserDao;
 import com.iryna.entity.User;
 import com.iryna.security.entity.Role;
 import lombok.Setter;
+import org.postgresql.ds.PGSimpleDataSource;
+import org.springframework.stereotype.Component;
 
 import java.sql.SQLException;
 
 @Setter
+@Component
 public class JdbcUserDao implements UserDao {
 
     private static final String FIND_BY_LOGIN_QUERY = "SELECT login, role, encrypted_password, salt FROM users WHERE login = ?;";
-
-    private DataSourceHolder dataSourceHolder;
+    private PGSimpleDataSource pGSimpleDataSource;
 
     public User findByLogin(String login) {
-        try (var connection = dataSourceHolder.getPGSimpleDataSource().getConnection();
+        try (var connection = pGSimpleDataSource.getConnection();
              var preparedStatement = connection.prepareStatement(FIND_BY_LOGIN_QUERY)) {
             preparedStatement.setString(1, login);
             try (var resultSet = preparedStatement.executeQuery()) {
