@@ -2,21 +2,20 @@ package com.iryna.service;
 
 import com.iryna.dao.ProductDao;
 import com.iryna.entity.Product;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@Setter
+@RequiredArgsConstructor
 @Service
-@NoArgsConstructor
 public class ProductService {
 
-    private ProductDao productDao;
+    private final ProductDao productDao;
 
     public List<Product> getAll(String searchedWord) {
         log.info("Get all SEARCH {} ", searchedWord);
@@ -37,6 +36,7 @@ public class ProductService {
     }
 
     public void create(Product product) {
+        product.setCreationDate(LocalDateTime.now());
         productDao.create(product);
     }
 }

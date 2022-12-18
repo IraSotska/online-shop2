@@ -8,29 +8,15 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:property-placeholder location="classpath:/application.properties"/>
+    <context:component-scan base-package="com.iryna">
+        <context:exclude-filter type="regex" expression="com\.iryna\.web.*"/>
+    </context:component-scan>
 
-    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
-        <property name="location" value="classpath:application.properties"/>
-    </bean>
+    <context:property-placeholder location="classpath:/application.properties"/>
 
     <bean id="pGSimpleDataSource" class="org.postgresql.ds.PGSimpleDataSource">
         <property name="password" value="${db.password}"/>
         <property name="url" value="${db.url}"/>
         <property name="user" value="${db.user}"/>
     </bean>
-
-    <bean id="jdbcUserDao" class="com.iryna.dao.jdbc.JdbcUserDao">
-        <property name="pGSimpleDataSource" ref="pGSimpleDataSource"/>
-    </bean>
-
-    <bean id="userService" class="com.iryna.service.UserService">
-        <property name="userDao" ref="jdbcUserDao"/>
-    </bean>
-
-    <bean id="securityService" class="com.iryna.security.SecurityService">
-        <property name="userService" ref="userService"/>
-        <property name="sessionTimeToLive" value="${session.time-to-live}"/>
-    </bean>
-
 </beans>

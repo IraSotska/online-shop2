@@ -27,18 +27,18 @@
 </div>
 <body>
 <div class="container">
-    <form action="/products/add" method="POST">
+    <form action="/products/add" method="POST" modelAttribute="product">
         <div class="mb-3">
             <label class="form-label">Product name:</label>
-            <input class="form-control" type="text" name="productName" required>
+            <input class="form-control" path="name" type="text" name="name" required>
         </div>
         <div class="mb-3">
             <label class="form-label">Price:</label>
-            <input class="form-control" type="text" name="productPrice" required>
+            <input class="form-control" path="price" type="text" name="price" required>
         </div>
         <div class="mb-3">
             <label class="form-label">Description:</label>
-            <input class="form-control" type="text" name="description" required>
+            <input class="form-control" path="description" type="text" name="description" required>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

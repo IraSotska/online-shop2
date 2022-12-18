@@ -11,23 +11,23 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="com.iryna">
-        <context:exclude-filter type="regex" expression="com\.iryna\.security.*"/>
-    </context:component-scan>
+    <context:component-scan base-package="com.iryna.web"/>
 
-    <bean id="productService" class="com.iryna.service.ProductService">
-        <property name="productDao" ref="jdbcProductDao"/>
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="cache" value="true"/>
+        <property name="prefix" value=""/>
+        <property name="suffix" value=".html"/>
+        <property name="contentType" value="text/html;charset=UTF-8"/>
     </bean>
 
-    <bean id="jdbcProductDao" class="com.iryna.dao.jdbc.JdbcProductDao">
-        <property name="productRowMapper" ref="productRowMapper"/>
-        <property name="pGSimpleDataSource" ref="pGSimpleDataSource"/>
+    <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath" value="classpath:/templates/"/>
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="default_encoding">UTF-8</prop>
+            </props>
+        </property>
     </bean>
-
-    <bean id="productRowMapper" class="com.iryna.dao.jdbc.mapper.ProductRowMapper"/>
-
-    <bean id="pageGenerator" class="com.iryna.web.template.PageGenerator"/>
 
     <mvc:annotation-driven/>
-
 </beans>

@@ -42,9 +42,9 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>9.1.2</version>
                 <configuration>
-                    <url>jdbc:postgresql://ec2-176-34-215-248.eu-west-1.compute.amazonaws.com/d8t3qbnrh61g8q</url>
-                    <user>paoaquffbmttrw</user>
-                    <password>89d6e6fb87ba3023d9d5051789abdcf9fccdfd16430d9d481b7da0e0b3e3f297</password>
+                    <url>jdbc:postgresql://localhost:5432/</url>
+                    <user>ira</user>
+                    <password>pwd</password>
                 </configuration>
             </plugin>
             <plugin>
@@ -94,9 +94,9 @@
             <version>42.4.1</version>
         </dependency>
         <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>2.3.31</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+            <version>2.5.4</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

@@ -1,7 +1,6 @@
-package com.iryna.web.servlet;
+package com.iryna.web.controller;
 
 import com.iryna.security.SecurityService;
-import com.iryna.web.template.PageGenerator;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Map;
 
 @Slf4j
 @Controller
@@ -22,16 +19,15 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class LoginController {
 
-    private final PageGenerator pageGenerator;
     private final SecurityService securityService;
 
     @GetMapping
-    public void doGet(HttpServletResponse response) throws IOException {
-        response.getWriter().println(pageGenerator.generatePage("login.html", Map.of()));
+    public String getLoginPage() {
+        return "login";
     }
 
     @PostMapping
-    public String doPost(@RequestParam String login, @RequestParam String password, HttpServletResponse response) {
+    public String login(@RequestParam String login, @RequestParam String password, HttpServletResponse response) {
         var token = securityService.login(login, password);
         if (token == null) {
             log.info("Not correct password for user: {}", login);

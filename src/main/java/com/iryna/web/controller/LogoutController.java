@@ -1,4 +1,4 @@
-package com.iryna.web.servlet;
+package com.iryna.web.controller;
 
 import com.iryna.security.SecurityService;
 import com.iryna.web.util.CookieExtractor;
@@ -19,7 +19,7 @@ public class LogoutController {
     private final SecurityService securityService;
 
     @PostMapping
-    public String doPost(HttpServletRequest request) {
+    public String logout(HttpServletRequest request) {
         CookieExtractor.extractCookie(request.getCookies(), "user-token").ifPresent(securityService::logout);
 
         return "redirect:login";

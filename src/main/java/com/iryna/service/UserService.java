@@ -3,7 +3,7 @@ package com.iryna.service;
 import com.iryna.dao.UserDao;
 import com.iryna.entity.Product;
 import com.iryna.entity.User;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +11,11 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
-@Setter
+@RequiredArgsConstructor
 @Service
 public class UserService {
 
-    private UserDao userDao;
+    private final UserDao userDao;
 
     private static final Map<String, List<Product>> cartList = new ConcurrentHashMap<>();
 

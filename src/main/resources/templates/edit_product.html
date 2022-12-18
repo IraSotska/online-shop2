@@ -30,20 +30,20 @@
 </div>
 <body>
 <div class="container">
-    <form action="/products/edit" method="POST">
+    <form action="/products/edit" method="POST" modelAttribute="product">
         <div class="mb-3">
             <label class="form-label">Product name:</label>
-            <input class="form-control" type="text" placeholder="${product.name}" name="name" required>
-            <input type="hidden" name="id" value=${product.id} required>
-            <input type="hidden" name="creationDate" value=${product.creationDate}>
+            <input class="form-control" type="text" path="name" placeholder="${product.name}" name="name" required>
+            <input type="hidden" name="id" path="id" value=${product.id} required>
+            <input type="hidden" name="creationDate" path="creationDate" value=${product.creationDate}>
         </div>
         <div class="mb-3">
             <label class="form-label">Price:</label>
-            <input class="form-control" type="text" placeholder="${product.price}" name="price" required>
+            <input class="form-control" type="text" path="price" placeholder="${product.price}" name="price" required>
         </div>
         <div class="mb-3">
             <label class="form-label">Description:</label>
-            <input class="form-control" type="text" placeholder="${product.description}" name="description" required>
+            <input class="form-control" type="text" path="description" placeholder="${product.description}" name="description" required>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

@@ -4,6 +4,7 @@ import com.iryna.dao.ProductDao;
 import com.iryna.dao.jdbc.mapper.ProductRowMapper;
 import com.iryna.entity.Product;
 import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.stereotype.Component;
 
@@ -13,11 +14,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Setter
+@RequiredArgsConstructor
 @Component
 public class JdbcProductDao implements ProductDao {
 
-    private ProductRowMapper productRowMapper;
-    private PGSimpleDataSource pGSimpleDataSource;
+    private final ProductRowMapper productRowMapper;
+    private final PGSimpleDataSource pGSimpleDataSource;
 
     private static final String FIND_ALL_WITH_SEARCH_QUERY = "SELECT id, name, price, creation_date, description FROM products WHERE name LIKE ? OR description LIKE ?;";
     private static final String CREATE_PRODUCT_QUERY = "INSERT INTO products(name, price, creation_date, description) VALUES (?, ?, ?, ?);";

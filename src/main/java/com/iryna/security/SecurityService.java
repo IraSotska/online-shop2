@@ -5,7 +5,7 @@ import com.iryna.security.entity.Session;
 import com.iryna.service.UserService;
 import com.iryna.util.PasswordEncryptor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,13 +16,15 @@ import java.util.*;
 import static com.iryna.security.entity.Role.*;
 
 @Slf4j
-@Setter
 @Getter
+@RequiredArgsConstructor
 @Service
 public class SecurityService {
 
     private List<Session> sessionList = new ArrayList<>();
-    private UserService userService;
+    private final UserService userService;
+
+    @Value("${session.time-to-live}")
     private Integer sessionTimeToLive;
 
     public String login(String login, String password) {
