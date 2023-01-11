@@ -1,9 +1,8 @@
 package com.iryna.web.util;
 
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import javax.servlet.http.Cookie;
 
 import static org.junit.jupiter.api.Assertions.*;
 
